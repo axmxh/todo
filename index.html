@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="css/all.min.css" />
+    <link type="text/css" rel="stylesheet" href="css/style.css" />
+    <title>ToDo App</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="top">
+        <div class="header">
+          ToDo List for <span class="month">{Month}</span>
+        </div>
+        <div class="add">
+          <div class="add__container">
+            <input type="text" class="add__todo" placeholder="Add todo item" />
+            <button class="add__btn">
+              Add +
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="bottom">
+        <div class="todos">
+          <h2 class="todos__title">Todo List</h2>
+
+          <div class="todos__list">
+            <div class="item clearfix" id="todo-0">
+              <input class="item__done" type="checkbox" />
+              <div class="item__description">Apartment rent</div>
+              <div class="right clearfix">
+                <div class="item__tag">OverDue</div>
+                <div class="item__edit">
+                  <button class="item__edit--btn">
+                    <i class="fas fa-edit"></i>
+                  </button>
+                </div>
+                <div class="item__delete">
+                  <button class="item__delete--btn">
+                    <i class="fas fa-trash-alt"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="item clearfix" id="todo-1">
+              <input class="item__done" type="checkbox" />
+              <div class="item__description">Apartment rent</div>
+              <div class="right clearfix">
+                <div class="item__tag">OverDue</div>
+                <div class="item__edit">
+                  <button class="item__edit--btn">
+                    <i class="fas fa-edit"></i>
+                  </button>
+                </div>
+                <div class="item__delete">
+                  <button class="item__delete--btn">
+                    <i class="fas fa-trash-alt"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="js/app.js"></script>
+  </body>
+</html>
