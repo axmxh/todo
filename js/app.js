@@ -19,6 +19,19 @@ let todoController = (function() {
       data.push(newTodo);
       return newTodo;
     },
+    deleteTodo: function(id) {
+      let ids, index;
+
+      ids = data.map(function(cur) {
+        return cur.id;
+      });
+
+      index = ids.indexOf(id);
+
+      if (index !== -1) {
+        data.splice(index, 1);
+      }
+    },
     test: function() {
       console.log(data);
     }
