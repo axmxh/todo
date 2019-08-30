@@ -70,6 +70,11 @@ let UIController = (function() {
 let controller = (function(todoCtrl, UICtrl) {
   let DOM = UICtrl.getDomStrings();
   document.querySelector(DOM.addBtn).addEventListener('click', ctrlAddTodo);
+  document.addEventListener('keypress', function(e) {
+    if (e.keyCode === 13 || e.which === 13) {
+      ctrlAddTodo();
+    }
+  });
 
   function ctrlAddTodo() {
     let input, newTodo;
