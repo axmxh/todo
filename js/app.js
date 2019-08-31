@@ -25,13 +25,14 @@ let todoController = (function() {
       ids = data.map(function(cur) {
         return cur.id;
       });
-
+      console.log(ids);
       index = ids.indexOf(id);
 
       if (index !== -1) {
         data.splice(index, 1);
       }
     },
+
     test: function() {
       console.log(data);
     }
@@ -74,6 +75,11 @@ let UIController = (function() {
         .querySelector(DOMStrings.todoList)
         .insertAdjacentHTML('beforeend', html);
     },
+
+    deleteTodoItem(itemID) {
+      let el = document.getElementById(itemID);
+      el.parentNode.removeChild(el);
+    },
     getDomStrings: function() {
       return DOMStrings;
     }
@@ -88,6 +94,9 @@ let controller = (function(todoCtrl, UICtrl) {
       ctrlAddTodo();
     }
   });
+  document
+    .querySelector(DOM.todoList)
+    .addEventListener('click', ctrlDeleteTodo);
 
   function ctrlAddTodo() {
     let input, newTodo;
@@ -99,5 +108,18 @@ let controller = (function(todoCtrl, UICtrl) {
       // 3. add todo to ui
       UICtrl.addTodoItem(newTodo);
     }
+  }
+
+  function ctrlDeleteTodo(e) {
+    let itemID, splitID;
+    itemID = e.target.parentNode.parentNode.parentNode.parentNode.id;
+    console.log(itemID);
+
+    splitID = parseInt(itemID.split('-')[1]);
+    console.log('---- ' + splitID);
+    // remove todo from data
+    todoCtrl.deleteTodo(splitID);
+    // remove todo from ui
+    UICtrl.deleteTodoItem(itemID);
   }
 })(todoController, UIController);
