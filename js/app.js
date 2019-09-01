@@ -43,7 +43,8 @@ let UIController = (function() {
   let DOMStrings = {
     addTodo: '.add__todo',
     addBtn: '.add__btn',
-    todoList: '.todo__list'
+    todoList: '.todo__list',
+    deleteBtn: '.item__delete--btn'
   };
 
   return {
@@ -74,6 +75,9 @@ let UIController = (function() {
       document
         .querySelector(DOMStrings.todoList)
         .insertAdjacentHTML('beforeend', html);
+    },
+    clearInput: function() {
+      document.querySelector(DOMStrings.addTodo).value = '';
     },
 
     deleteTodoItem(itemID) {
@@ -108,18 +112,19 @@ let controller = (function(todoCtrl, UICtrl) {
       // 3. add todo to ui
       UICtrl.addTodoItem(newTodo);
     }
+    UICtrl.clearInput();
   }
 
   function ctrlDeleteTodo(e) {
     let itemID, splitID;
-    itemID = e.target.parentNode.parentNode.parentNode.parentNode.id;
-    console.log(itemID);
+    if (e.target === document.querySelector(DOM.deleteBtn).firstElementChild) {
+      itemID = e.target.parentNode.parentNode.parentNode.parentNode.id;
 
-    splitID = parseInt(itemID.split('-')[1]);
-    console.log('---- ' + splitID);
-    // remove todo from data
-    todoCtrl.deleteTodo(splitID);
-    // remove todo from ui
-    UICtrl.deleteTodoItem(itemID);
+      splitID = parseInt(itemID.split('-')[1]);
+      // remove todo from data
+      todoCtrl.deleteTodo(splitID);
+      // remove todo from ui
+      UICtrl.deleteTodoItem(itemID);
+    }
   }
 })(todoController, UIController);
