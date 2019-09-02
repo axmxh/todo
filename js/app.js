@@ -134,16 +134,19 @@ let controller = (function(todoCtrl, UICtrl) {
   }
 
   function ctrlDeleteTodo(e) {
-    let itemID, splitID;
-    if (e.target === document.querySelector(DOM.deleteBtn).firstElementChild) {
-      itemID = e.target.parentNode.parentNode.parentNode.parentNode.id;
-
-      splitID = parseInt(itemID.split('-')[1]);
-      // remove todo from data
-      todoCtrl.deleteTodo(splitID);
-      // remove todo from ui
-      UICtrl.deleteTodoItem(itemID);
+    console.log(e.target.classList.value);
+    let itemID, splitID, deleteClass;
+    deleteClass = e.target.classList.value;
+    if (deleteClass.indexOf('fa-trash-alt') === -1) {
+      return;
     }
+    itemID = e.target.parentNode.parentNode.parentNode.parentNode.id;
+    console.log(itemID);
+    splitID = parseInt(itemID.split('-')[1]);
+    // remove todo from data
+    todoCtrl.deleteTodo(splitID);
+    // remove todo from ui
+    UICtrl.deleteTodoItem(itemID);
   }
 
   function updateStatus(e) {
