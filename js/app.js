@@ -32,6 +32,7 @@ let todoController = (function() {
         data.splice(index, 1);
       }
     },
+    //todoStatus: function(id, status) {},
 
     test: function() {
       console.log(data);
@@ -44,7 +45,9 @@ let UIController = (function() {
     addTodo: '.add__todo',
     addBtn: '.add__btn',
     todoList: '.todo__list',
-    deleteBtn: '.item__delete--btn'
+    deleteBtn: '.item__delete--btn',
+    itemDone: '.item__done',
+    itemTag: '.item__tag'
   };
 
   return {
@@ -80,6 +83,19 @@ let UIController = (function() {
       document.querySelector(DOMStrings.addTodo).value = '';
     },
 
+    getStatus() {
+      let todoStatus, todoTag;
+      todoStatus = document.querySelector(DOMStrings.itemDone).checked;
+      todoTag = document.querySelector(DOMStrings.itemTag);
+      if (todoStatus) {
+        todoTag.textContent = 'Done';
+        todoTag.classList.toggle('done');
+      } else {
+        todoTag.textContent = 'ToDo';
+        todoTag.classList.toggle('done');
+      }
+    },
+
     deleteTodoItem(itemID) {
       let el = document.getElementById(itemID);
       el.parentNode.removeChild(el);
@@ -92,15 +108,17 @@ let UIController = (function() {
 
 let controller = (function(todoCtrl, UICtrl) {
   let DOM = UICtrl.getDomStrings();
+  let todoListSelector = document.querySelector(DOM.todoList);
+
   document.querySelector(DOM.addBtn).addEventListener('click', ctrlAddTodo);
   document.addEventListener('keypress', function(e) {
     if (e.keyCode === 13 || e.which === 13) {
       ctrlAddTodo();
     }
   });
-  document
-    .querySelector(DOM.todoList)
-    .addEventListener('click', ctrlDeleteTodo);
+
+  todoListSelector.addEventListener('click', ctrlDeleteTodo);
+  todoListSelector.addEventListener('click', updateStatus);
 
   function ctrlAddTodo() {
     let input, newTodo;
@@ -125,6 +143,15 @@ let controller = (function(todoCtrl, UICtrl) {
       todoCtrl.deleteTodo(splitID);
       // remove todo from ui
       UICtrl.deleteTodoItem(itemID);
+    }
+  }
+
+  function updateStatus(e) {
+    if (e.target === document.querySelector(DOM.itemDone)) {
+      // update status in data
+      // ---- todoCtrl.todoStatus(id,status)
+      // update status in UI
+      //UICtrl.getStatus();
     }
   }
 })(todoController, UIController);
