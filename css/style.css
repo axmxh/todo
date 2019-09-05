@@ -12,6 +12,15 @@ button i {
     cursor: pointer;
 }
 
+button:focus{
+    outline: 0;
+}
+
+button:focus i{
+    color: #737373;
+}
+
+
 i {
     font-size: 1.8em;
 }
