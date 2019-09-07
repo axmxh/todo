@@ -32,7 +32,14 @@ let todoController = (function() {
         data.splice(index, 1);
       }
     },
-    //todoStatus: function(id, status) {},
+    todoStatus: function(id, status) {
+      data.map(function(cur) {
+        //console.log(cur);
+        if (id === cur.id) {
+          cur.status = status;
+        }
+      });
+    },
 
     test: function() {
       console.log(data);
@@ -83,16 +90,20 @@ let UIController = (function() {
       document.querySelector(DOMStrings.addTodo).value = '';
     },
 
-    getStatus() {
-      let todoStatus, todoTag;
-      todoStatus = document.querySelector(DOMStrings.itemDone).checked;
-      todoTag = document.querySelector(DOMStrings.itemTag);
+    getStatus(itemID) {
+      let el, todoStatus, todoTag;
+      el = document.getElementById(itemID);
+      todoStatus = el.querySelector(DOMStrings.itemDone).checked;
+      todoTag = el.querySelector(DOMStrings.itemTag);
+
       if (todoStatus) {
         todoTag.textContent = 'Done';
         todoTag.classList.toggle('done');
+        return 'Done';
       } else {
         todoTag.textContent = 'ToDo';
         todoTag.classList.toggle('done');
+        return 'ToDo';
       }
     },
 
@@ -134,14 +145,14 @@ let controller = (function(todoCtrl, UICtrl) {
   }
 
   function ctrlDeleteTodo(e) {
-    console.log(e.target.classList.value);
+    //console.log(e.target.classList.value);
     let itemID, splitID, deleteClass;
     deleteClass = e.target.classList.value;
     if (deleteClass.indexOf('fa-trash-alt') === -1) {
       return;
     }
     itemID = e.target.parentNode.parentNode.parentNode.parentNode.id;
-    console.log(itemID);
+    //console.log(itemID);
     splitID = parseInt(itemID.split('-')[1]);
     // remove todo from data
     todoCtrl.deleteTodo(splitID);
@@ -150,11 +161,16 @@ let controller = (function(todoCtrl, UICtrl) {
   }
 
   function updateStatus(e) {
-    if (e.target === document.querySelector(DOM.itemDone)) {
-      // update status in data
-      // ---- todoCtrl.todoStatus(id,status)
-      // update status in UI
-      //UICtrl.getStatus();
+    let itemID, splitID, statusClass, todoStatus;
+    statusClass = e.target.classList.value;
+    if (statusClass.indexOf('item__done') === -1) {
+      return;
     }
+    itemID = e.target.parentNode.id;
+    splitID = parseInt(itemID.split('-')[1]);
+    // update status in UI
+    todoStatus = UICtrl.getStatus(itemID);
+    // update status in data
+    todoCtrl.todoStatus(splitID, todoStatus);
   }
 })(todoController, UIController);
