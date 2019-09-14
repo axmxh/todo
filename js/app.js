@@ -54,7 +54,8 @@ let UIController = (function() {
     todoList: '.todo__list',
     deleteBtn: '.item__delete--btn',
     itemDone: '.item__done',
-    itemTag: '.item__tag'
+    itemTag: '.item__tag',
+    noItems: '.no-items'
   };
 
   return {
@@ -120,11 +121,20 @@ let UIController = (function() {
 let controller = (function(todoCtrl, UICtrl) {
   let DOM = UICtrl.getDomStrings();
   let todoListSelector = document.querySelector(DOM.todoList);
+  noTodoItems();
 
   document.querySelector(DOM.addBtn).addEventListener('click', ctrlAddTodo);
   document.addEventListener('keypress', function(e) {
     if (e.keyCode === 13 || e.which === 13) {
       ctrlAddTodo();
+    }
+  });
+
+  document.addEventListener('change', function() {
+    if (document.querySelector(DOM.todoList).children.length === 0) {
+      document.querySelector(DOM.noItems).textContent = 'No items';
+    } else {
+      document.querySelector(DOM.noItems).hidden = true;
     }
   });
 
@@ -142,6 +152,7 @@ let controller = (function(todoCtrl, UICtrl) {
       UICtrl.addTodoItem(newTodo);
     }
     UICtrl.clearInput();
+    noTodoItems();
   }
 
   function ctrlDeleteTodo(e) {
@@ -158,6 +169,7 @@ let controller = (function(todoCtrl, UICtrl) {
     todoCtrl.deleteTodo(splitID);
     // remove todo from ui
     UICtrl.deleteTodoItem(itemID);
+    noTodoItems();
   }
 
   function updateStatus(e) {
@@ -172,5 +184,14 @@ let controller = (function(todoCtrl, UICtrl) {
     todoStatus = UICtrl.getStatus(itemID);
     // update status in data
     todoCtrl.todoStatus(splitID, todoStatus);
+    noTodoItems();
+  }
+
+  function noTodoItems() {
+    if (document.querySelector(DOM.todoList).children.length === 0) {
+      document.querySelector(DOM.noItems).hidden = false;
+    } else {
+      document.querySelector(DOM.noItems).hidden = true;
+    }
   }
 })(todoController, UIController);
